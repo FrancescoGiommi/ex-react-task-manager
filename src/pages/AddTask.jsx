@@ -17,6 +17,7 @@ export default function AddTask() {
     const description = descriptionRef.current.value;
     const status = statusRef.current.value;
 
+    // Creo l'oggetto task
     const newTask = {
       title,
       description,
