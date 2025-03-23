@@ -20,7 +20,7 @@ export default function TaskList() {
   return (
     <>
       <h1>Lista delle task</h1>
-      <br />
+      <hr />
 
       <table className="table">
         <thead>
