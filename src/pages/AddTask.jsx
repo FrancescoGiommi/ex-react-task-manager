@@ -4,7 +4,14 @@ export default function AddTask() {
   const [title, setTitle] = useState("");
   const descriptionRef = useRef();
   const statusRef = useRef();
+  const symbols = "!@#$%^&*()-_=+[]{}|;:'\\,.<>?/`~";
 
+  // Controllo se il titolo è valido
+  const isValidTitle =
+    title.trim().length > 0 &&
+    !title.split("").some((char) => symbols.includes(char));
+
+  // Funzione per gestire il submit del form
   const handrleSubmit = (e) => {
     e.preventDefault();
     const description = descriptionRef.current.value;
@@ -16,6 +23,9 @@ export default function AddTask() {
       status,
     };
     console.log(newTask);
+    setTitle("");
+    descriptionRef.current.value = "";
+    statusRef.current.value = "To do";
   };
   return (
     <div>
@@ -33,7 +43,11 @@ export default function AddTask() {
             id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            required
           />
+          <p style={{ color: isValidTitle ? "green" : "red" }}>
+            {isValidTitle ? "Titolo valido" : "Titolo non valido"}
+          </p>
         </div>
         <div>
           {/* Descrizione */}
