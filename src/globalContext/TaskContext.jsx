@@ -1,8 +1,12 @@
 import { createContext, useContext } from "react";
 import { useEffect, useState } from "react";
+import useTasks from "../customHooks/useTasks";
+
 export const TaskContext = createContext();
 
 export const TaskContextProvider = ({ children }) => {
+  const { hookTasks, hookTasksFetch, addTask, removeTask, updateTask } =
+    useTasks();
   const [tasks, setTasks] = useState([]);
 
   const tasksFetch = () => {
@@ -22,6 +26,6 @@ export const TaskContextProvider = ({ children }) => {
   return <TaskContext.Provider value={tasks}>{children}</TaskContext.Provider>;
 };
 
-export const useTasks = () => {
+export const consumerTasks = () => {
   return useContext(taskContext);
 };
