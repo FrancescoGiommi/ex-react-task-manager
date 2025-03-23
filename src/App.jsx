@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./App.css";
 
+//Components
+import NavBar from "./components/NavBar";
 //Pages
 import AddTask from "./pages/TaskLIst";
 import TaskList from "./pages/AddTask";
@@ -47,15 +50,18 @@ Inoltre, dovrà garantire un'esperienza fluida con prestazioni ottimizzate. */
    5. Definire le rotte con Routes e Route, associando ogni percorso alla rispettiva pagina. */
 
 function App() {
-  const [count, setCount] = useState(0);
+  // const [count, setCount] = useState(0);
 
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          <Route Component={<TaskList />} path="/" />
-          <Route Component={<AddTask />} path="/addTask" />
-        </Routes>
+        <NavBar />
+        <div className="container">
+          <Routes>
+            <Route element={<TaskList />} path="/" />
+            <Route element={<AddTask />} path="/addTask" />
+          </Routes>
+        </div>
       </BrowserRouter>
     </>
   );
