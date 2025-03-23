@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Link, NavLink } from "react-router-dom";
 import "./App.css";
 
 //Components
 import NavBar from "./components/NavBar";
+
 //Pages
 import AddTask from "./pages/TaskLIst";
 import TaskList from "./pages/AddTask";
+
+//Context
+import { TaskContextProvider } from "./globalContext/TaskContext";
 /* Sei stato assunto per costruire un Task Manager Avanzato, un’app web che permette agli utenti di creare,
  modificare, organizzare ed eliminare task in modo intuitivo ed efficiente. */
 
@@ -49,20 +53,40 @@ Inoltre, dovrà garantire un'esperienza fluida con prestazioni ottimizzate. */
 
    5. Definire le rotte con Routes e Route, associando ogni percorso alla rispettiva pagina. */
 
+//! Milestone 2 - Setup Context API e Fetch Iniziale
+
+/* Creare un contesto globale per la gestione dei dati e recuperare la lista dei task dall'API.
+
+    1. Salvare l'URL dell'API nel file .env del progetto frontend:
+        Creare un file .env nella cartella del progetto frontend e aggiungere lo URL della API raccolto alla Milestone 1.
+        In questo modo, l'URL sarà accessibile in tutto il progetto senza doverlo scrivere manualmente nel codice.
+
+    2. Creare un Context API (GlobalContext) per gestire lo stato globale dell'applicazione.
+
+    3. Definire uno useState all'interno del provider, per memorizzare la lista dei task.
+
+    4. Effettuare una richiesta GET a /tasks al caricamento dell'app, utilizzando useEffect, e salvare i dati nello stato.
+
+    5. Stampare in console i dati ricevuti per verificare il corretto recupero delle informazioni.
+
+    6. Rendere disponibile il GlobalContext.Provider in App.jsx, avvolgendo l'intera applicazione. */
+
 function App() {
   // const [count, setCount] = useState(0);
 
   return (
     <>
-      <BrowserRouter>
-        <NavBar />
-        <div className="container">
-          <Routes>
-            <Route element={<TaskList />} path="/" />
-            <Route element={<AddTask />} path="/addTask" />
-          </Routes>
-        </div>
-      </BrowserRouter>
+      <TaskContextProvider>
+        <BrowserRouter>
+          <NavBar />
+          <div className="container">
+            <Routes>
+              <Route element={<TaskList />} path="/" />
+              <Route element={<AddTask />} path="/addTask" />
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </TaskContextProvider>
     </>
   );
 }
