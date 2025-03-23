@@ -1,12 +1,10 @@
 import { useState } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  BrowserRouter,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 
+//Pages
+import AddTask from "./pages/TaskLIst";
+import TaskList from "./pages/AddTask";
 /* Sei stato assunto per costruire un Task Manager Avanzato, un’app web che permette agli utenti di creare,
  modificare, organizzare ed eliminare task in modo intuitivo ed efficiente. */
 
@@ -55,7 +53,8 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route />
+          <Route Component={<TaskList />} path="/" />
+          <Route Component={<AddTask />} path="/addTask" />
         </Routes>
       </BrowserRouter>
     </>
