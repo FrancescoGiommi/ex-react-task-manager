@@ -1,10 +1,14 @@
+// Importo useState e useRef da react
 import { useState, useRef } from "react";
+// Importo useTasks da useTasks
+import useTasks from "../customHooks/useTasks";
 
 export default function AddTask() {
   const [title, setTitle] = useState("");
   const descriptionRef = useRef();
   const statusRef = useRef();
   const symbols = "!@#$%^&*()-_=+[]{}|;:'\\,.<>?/`~";
+  const { addTask } = useTasks();
 
   // Controllo se il titolo è valido
   const isValidTitle =
@@ -12,7 +16,7 @@ export default function AddTask() {
     !title.split("").some((char) => symbols.includes(char));
 
   // Funzione per gestire il submit del form
-  const handrleSubmit = (e) => {
+  const handrleSubmit = async (e) => {
     e.preventDefault();
     const description = descriptionRef.current.value;
     const status = statusRef.current.value;
@@ -23,10 +27,21 @@ export default function AddTask() {
       description,
       status,
     };
-    console.log(newTask);
-    setTitle("");
-    descriptionRef.current.value = "";
-    statusRef.current.value = "To do";
+    try {
+      // Con await aspetto il risultato di addTask
+      const result = await addTask(newTask);
+      if (result.success) {
+        alert("Task aggiunto con successo");
+        setTitle("");
+        descriptionRef.current.value = "";
+        statusRef.current.value = "To do";
+      } else {
+        alert("Errore: " + result.message);
+      }
+    } catch (error) {
+      console.error("Errore nell'aggiunta del task:", error);
+      alert("Errore imprevisto nell'aggiunta del task");
+    }
   };
   return (
     <div>

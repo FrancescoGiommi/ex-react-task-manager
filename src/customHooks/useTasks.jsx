@@ -17,7 +17,32 @@ export default function useTasks() {
       .catch((error) => console.error("Errore nel fetch:", error));
   };
 
-  const addTask = (task) => {};
+  const addTask = (task) => {
+    return fetch("http://localhost:3001/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setHookTasks((prevTask) => [...prevTask, data.task]);
+          return { success: true, task: data.task };
+        } else {
+          throw new Error(
+            data.message || { success: false, message: "Messaggio di errore" }
+          );
+        }
+      })
+      .catch((error) => {
+        return {
+          success: false,
+          message: error.message || "Errore sconosciuto",
+        };
+      });
+  };
 
   const removeTask = (id) => {};
 
