@@ -6,7 +6,7 @@ export default function TaskRow({ task, colorsStates }) {
   return (
     <tr>
       <td>
-        <Link to={`/task/${task.id}`} title={`ID: ${task.id}`}>
+        <Link to={`/task/${task.id}`} state={{ task }} title={`ID: ${task.id}`}>
           {task.title}
         </Link>
       </td>
