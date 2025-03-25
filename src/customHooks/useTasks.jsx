@@ -69,7 +69,32 @@ export default function useTasks() {
       });
   };
 
-  const updateTask = (id, task) => {};
+  const updateTask = (id, task) => {
+    return fetch("http://localhost:3001/tasks/" + id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setHookTasks((prevTasks) =>
+            prevTasks.map((t) => (t.id === id ? data.task : t))
+          );
+          return { success: true, task: data.task };
+        } else {
+          throw new Error(data.message || "Errore nell'aggiornamento del task");
+        }
+      })
+      .catch((error) => {
+        return {
+          success: false,
+          message: error.message || "Errore sconosciuto",
+        };
+      });
+  };
 
   return { hookTasks, hookTasksFetch, addTask, removeTask, updateTask };
 }
