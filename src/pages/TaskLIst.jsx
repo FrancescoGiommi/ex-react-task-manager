@@ -1,11 +1,21 @@
-import { useContext, useState, useMemo } from "react";
+import { useContext, useState, useMemo, useCallback, useRef } from "react";
 import { TaskContext } from "../globalContext/TaskContext";
 import TaskRow from "../components/TaskRow";
+function debounce(callback, delay) {
+  let timer;
+  return (value) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      callback(value);
+    }, delay);
+  };
+}
 export default function TaskList() {
   const tasks = useContext(TaskContext);
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+
   // Funzione per colorare le righe in base allo stato
 
   const handleSort = (field) => {
@@ -16,6 +26,8 @@ export default function TaskList() {
       setSortOrder(1);
     }
   };
+
+  const searchDebounce = useCallback(debounce(setSearchQuery, 500), []);
 
   const sortIcon = sortOrder === 1 ? "▲" : "▼";
 
@@ -61,10 +73,9 @@ export default function TaskList() {
       <hr />
       <input
         type="text"
+        onChange={(e) => searchDebounce(e.target.value)}
         className="form-control mb-3"
         placeholder="Cerca per titolo"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
       />
       <table className="table">
         <thead>
