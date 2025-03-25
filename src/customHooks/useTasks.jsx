@@ -44,7 +44,30 @@ export default function useTasks() {
       });
   };
 
-  const removeTask = (id) => {};
+  const removeTask = (id) => {
+    return fetch("http://localhost:3001/tasks/" + id, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setHookTasks((prevTasks) =>
+            prevTasks.filter((task) => task.id !== id)
+          );
+          return { success: true };
+        } else {
+          throw new Error(
+            data.message || "Errore nella cancellazione del task"
+          );
+        }
+      })
+      .catch((error) => {
+        return {
+          success: false,
+          message: error.message || "Errore sconosciuto",
+        };
+      });
+  };
 
   const updateTask = (id, task) => {};
 

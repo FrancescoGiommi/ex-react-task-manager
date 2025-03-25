@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import useTasks from "../customHooks/useTasks";
 
 export default function TaskDetail() {
   // Prendo i dati passati dalla pagina precedente
@@ -18,8 +19,26 @@ export default function TaskDetail() {
   // Estraggo il task dai dati passati
   const task = location.state.task;
 
-  const removeTask = () => {
-    console.log("Elimino task", task.id);
+  const { removeTask } = useTasks();
+
+  const deleteTask = () => {
+    // Rimuovo il task
+    fetch(`http://localhost:3001/tasks/${task.id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          removeTask(task.id);
+          alert("Task eliminato");
+          navigate("/");
+        } else {
+          alert("Errore nella cancellazione del task");
+        }
+      })
+      .catch((error) => {
+        console.error("Errore nella cancellazione del task:", error);
+      });
   };
 
   return (
@@ -43,7 +62,7 @@ export default function TaskDetail() {
           {new Date(task.createdAt).toLocaleDateString()}
         </p>
       </div>
-      <button className="btn btn-danger" onClick={removeTask}>
+      <button className="btn btn-danger" onClick={deleteTask}>
         Elimina task
       </button>
     </>
