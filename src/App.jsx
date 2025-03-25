@@ -13,6 +13,30 @@ import TaskList from "./pages/AddTask";
 //Context
 import { TaskContextProvider } from "./globalContext/TaskContext";
 import TaskDetail from "./pages/TaskDetail";
+
+function App() {
+  // const [count, setCount] = useState(0);
+
+  return (
+    <>
+      <TaskContextProvider>
+        <BrowserRouter>
+          <NavBar />
+          <div className="container">
+            <Routes>
+              <Route element={<TaskList />} path="/" />
+              <Route element={<AddTask />} path="/addTask" />
+              <Route element={<TaskDetail />} path="/task/:id" />
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </TaskContextProvider>
+    </>
+  );
+}
+
+export default App;
+
 /* Sei stato assunto per costruire un Task Manager Avanzato, un’app web che permette agli utenti di creare,
  modificare, organizzare ed eliminare task in modo intuitivo ed efficiente. */
 
@@ -208,25 +232,21 @@ Inoltre, dovrà garantire un'esperienza fluida con prestazioni ottimizzate. */
         Se la funzione lancia un errore:
             Mostrare un alert con il messaggio di errore ricevuto. */
 
-function App() {
-  // const [count, setCount] = useState(0);
+//! Milestone 9 - Componente Modal e Conferma Eliminazione Task
 
-  return (
-    <>
-      <TaskContextProvider>
-        <BrowserRouter>
-          <NavBar />
-          <div className="container">
-            <Routes>
-              <Route element={<TaskList />} path="/" />
-              <Route element={<AddTask />} path="/addTask" />
-              <Route element={<TaskDetail />} path="/task/:id" />
-            </Routes>
-          </div>
-        </BrowserRouter>
-      </TaskContextProvider>
-    </>
-  );
-}
+/* Creare un componente Modal riutilizzabile e utilizzarlo per confermare l’eliminazione di un task.
 
-export default App;
+    Creare il componente Modal.jsx, che deve:
+        Accettare i seguenti props:
+            title: il titolo della modale.
+            content: il contenuto principale della modale.
+            show: stato booleano per mostrare o nascondere la modale.
+            onClose: funzione per chiudere la modale.
+            onConfirm: funzione eseguita al click del bottone di conferma.
+            confirmText (opzionale, default "Conferma"): testo del bottone di conferma.
+        Utilizzare ReactDOM.createPortal per rendere la modale indipendente dal flusso di rendering.
+        Implementare i pulsanti "Annulla" (chiude la modale) e "Conferma" (esegue onConfirm).
+
+    Integrare il componente Modal in TaskDetail.jsx per confermare l'eliminazione:
+        Quando l’utente clicca su "Elimina Task", deve aprirsi la modale di conferma.
+        Se l’utente conferma, vengono eseguite le stesse operazioni della Milestone 8. */

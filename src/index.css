@@ -1,0 +1,8 @@
+.modal-backdrop {
+  z-index: 1040; /* Assicura che sia dietro la modale */
+}
+
+.modal {
+  z-index: 1050; /* Assicura che la modale sia sopra l'overlay */
+  display: block; /* Mostra la modale sempre */
+}

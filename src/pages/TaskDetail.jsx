@@ -1,5 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import useTasks from "../customHooks/useTasks";
+import Modal from "../components/Modal";
 
 export default function TaskDetail() {
   // Prendo i dati passati dalla pagina precedente
@@ -7,6 +9,8 @@ export default function TaskDetail() {
 
   // Mi permette di navigare tra le pagine
   const navigate = useNavigate();
+
+  const [show, setShow] = useState(false);
 
   // Controllo se ci sono i dati della task
   if (!location.state || !location.state.task) {
@@ -43,6 +47,9 @@ export default function TaskDetail() {
 
   return (
     <>
+      <script type="text/babel">
+        <Modal />
+      </script>
       <div>
         <h1>Dettagli della Task</h1>
         <p>
@@ -62,9 +69,23 @@ export default function TaskDetail() {
           {new Date(task.createdAt).toLocaleDateString()}
         </p>
       </div>
-      <button className="btn btn-danger" onClick={deleteTask}>
+
+      <button className="btn btn-danger" onClick={() => setShow(true)}>
         Elimina task
       </button>
+
+      {/* Modale per confermare la cancellazione */}
+      <Modal
+        title="Conferma Eliminazione"
+        content="Sei sicuro di voler eliminare questa task?"
+        show={show}
+        onClose={() => setShow(false)}
+        onConfirm={() => {
+          deleteTask();
+          setShow(false);
+        }}
+        confirmText="Elimina"
+      />
     </>
   );
 }
