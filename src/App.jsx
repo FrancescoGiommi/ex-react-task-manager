@@ -9,10 +9,9 @@ import NavBar from "./components/NavBar";
 //Pages
 import AddTask from "./pages/TaskLIst";
 import TaskList from "./pages/AddTask";
-
+import TaskDetail from "./pages/TaskDetail";
 //Context
 import { TaskContextProvider } from "./globalContext/TaskContext";
-import TaskDetail from "./pages/TaskDetail";
 
 function App() {
   // const [count, setCount] = useState(0);
@@ -24,8 +23,8 @@ function App() {
           <NavBar />
           <div className="container">
             <Routes>
-              <Route element={<TaskList />} path="/" />
-              <Route element={<AddTask />} path="/addTask" />
+              <Route element={<TaskList />} path="/add" />
+              <Route element={<AddTask />} path="/" />
               <Route element={<TaskDetail />} path="/task/:id" />
             </Routes>
           </div>
