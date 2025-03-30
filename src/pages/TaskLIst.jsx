@@ -31,7 +31,7 @@ export default function TaskList() {
 
   const sortIcon = sortOrder === 1 ? "▲" : "▼";
 
-  const filteredAndSorteredTast = useMemo(() => {
+  const filteredAndSorteredTask = useMemo(() => {
     return [...tasks]
       .filter((task) =>
         task.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -92,7 +92,7 @@ export default function TaskList() {
           </tr>
         </thead>
         <tbody>
-          {filteredAndSorteredTast.map((task, id) => (
+          {filteredAndSorteredTask.map((task, id) => (
             <TaskRow key={id} task={task} colorsStates={colorsStates} />
           ))}
         </tbody>
