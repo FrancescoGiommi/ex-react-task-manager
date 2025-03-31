@@ -1,7 +1,7 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 
-export default function TaskRow({ task, colorsStates }) {
+const TaskRow = React.memo(({ task, colorsStates }) => {
   const colorClass = useMemo(() => colorsStates(task), [task, colorsStates]);
   return (
     <tr>
@@ -14,4 +14,6 @@ export default function TaskRow({ task, colorsStates }) {
       <td>{new Date(task.createdAt).toLocaleDateString()}</td>
     </tr>
   );
-}
+});
+
+export default TaskRow;

@@ -1,5 +1,6 @@
 // Importo useState e useRef da react
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 // Importo useTasks da useTasks
 import useTasks from "../customHooks/useTasks";
 
@@ -9,6 +10,8 @@ export default function AddTask() {
   const statusRef = useRef();
   const symbols = "!@#$%^&*()-_=+[]{}|;:'\\,.<>?/`~";
   const { addTask } = useTasks();
+
+  const navigate = useNavigate();
 
   // Controllo se il titolo è valido
   const isValidTitle =
@@ -42,6 +45,9 @@ export default function AddTask() {
       console.error("Errore nell'aggiunta del task:", error);
       alert("Errore imprevisto nell'aggiunta del task");
     }
+
+    // Reindirizzo alla home page
+    navigate("/");
   };
   return (
     <div>
