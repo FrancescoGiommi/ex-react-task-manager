@@ -1,9 +1,14 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Modal from "./Modal";
 
 export default function EditTaskModal({ show, onClose, task, onSave }) {
   const [editedTask, setEditedTask] = useState(task);
   const editFormRef = useRef();
+
+  // Aggiorna lo stato quando task cambia
+  useEffect(() => {
+    setEditedTask(task || {});
+  }, [task]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

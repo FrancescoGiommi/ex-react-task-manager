@@ -27,7 +27,9 @@ export default function useTasks() {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
+          hookTasksFetch();
           setHookTasks((prevTask) => [...prevTask, data.task]);
+
           return { success: true, task: data.task };
         } else {
           throw new Error(
@@ -50,9 +52,11 @@ export default function useTasks() {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
+          hookTasksFetch();
           setHookTasks((prevTasks) =>
             prevTasks.filter((task) => task.id !== id)
           );
+
           return { success: true };
         } else {
           throw new Error(
@@ -79,9 +83,11 @@ export default function useTasks() {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
+          hookTasksFetch();
           setHookTasks((prevTasks) =>
             prevTasks.map((t) => (t.id === id ? data.task : t))
           );
+
           return { success: true, task: data.task };
         } else {
           throw new Error(data.message || "Errore nell'aggiornamento del task");

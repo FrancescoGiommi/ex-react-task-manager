@@ -1,4 +1,5 @@
 import { useContext, useState, useMemo, useCallback, useRef } from "react";
+
 import { TaskContext } from "../globalContext/TaskContext";
 import TaskRow from "../components/TaskRow";
 function debounce(callback, delay) {
@@ -11,7 +12,8 @@ function debounce(callback, delay) {
   };
 }
 export default function TaskList() {
-  const tasks = useContext(TaskContext);
+  const { hookTasks, addTask, removeTask, updateTask } =
+    useContext(TaskContext);
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,7 +34,7 @@ export default function TaskList() {
   const sortIcon = sortOrder === 1 ? "▲" : "▼";
 
   const filteredAndSorteredTask = useMemo(() => {
-    return [...tasks]
+    return [...hookTasks]
       .filter((task) =>
         task.title.toLowerCase().includes(searchQuery.toLowerCase())
       )
@@ -53,7 +55,7 @@ export default function TaskList() {
         }
         return 0;
       });
-  }, [tasks, sortBy, sortOrder, searchQuery]);
+  }, [hookTasks, sortBy, sortOrder, searchQuery]);
 
   const colorsStates = (task) => {
     if (task.status === "To do") {

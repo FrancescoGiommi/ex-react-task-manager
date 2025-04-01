@@ -14,8 +14,6 @@ import TaskDetail from "./pages/TaskDetail";
 import { TaskContextProvider } from "./globalContext/TaskContext";
 
 function App() {
-  // const [count, setCount] = useState(0);
-
   return (
     <>
       <TaskContextProvider>

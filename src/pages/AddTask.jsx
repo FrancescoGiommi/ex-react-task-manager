@@ -1,15 +1,15 @@
 // Importo useState e useRef da react
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { TaskContext } from "../globalContext/TaskContext";
 // Importo useTasks da useTasks
-import useTasks from "../customHooks/useTasks";
 
 export default function AddTask() {
   const [title, setTitle] = useState("");
   const descriptionRef = useRef();
   const statusRef = useRef();
   const symbols = "!@#$%^&*()-_=+[]{}|;:'\\,.<>?/`~";
-  const { addTask } = useTasks();
+  const { addTask } = useContext(TaskContext);
 
   const navigate = useNavigate();
 
@@ -32,15 +32,12 @@ export default function AddTask() {
     };
     try {
       // Con await aspetto il risultato di addTask
-      const result = await addTask(newTask);
-      if (result.success) {
-        alert("Task aggiunto con successo");
-        setTitle("");
-        descriptionRef.current.value = "";
-        statusRef.current.value = "To do";
-      } else {
-        alert("Errore: " + result.message);
-      }
+      await addTask(newTask);
+
+      alert("Task aggiunto con successo");
+      setTitle("");
+      descriptionRef.current.value = "";
+      statusRef.current.value = "To do";
     } catch (error) {
       console.error("Errore nell'aggiunta del task:", error);
       alert("Errore imprevisto nell'aggiunta del task");

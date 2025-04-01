@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import useTasks from "../customHooks/useTasks";
+import { useState, useContext } from "react";
+import { TaskContext } from "../globalContext/TaskContext";
+
 import Modal from "../components/Modal";
 import EditTaskModal from "../components/EditTaskMOdal";
 
@@ -25,54 +26,7 @@ export default function TaskDetail() {
   // Estraggo il task dai dati passati
   const task = location.state.task;
 
-  const { removeTask } = useTasks();
-
-  const updateTask = (updatedTask) => {
-    try {
-      fetch(`http://localhost:3001/tasks/${task.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedTask), // Usa l'oggetto aggiornato
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.success) {
-            alert("Task aggiornato con successo");
-            setShowUpdateModal(false);
-            navigate("/"); // Reindirizza dopo l'aggiornamento
-          } else {
-            alert("Errore nell'aggiornamento del task");
-          }
-        });
-    } catch {
-      (error) => console.error("Errore nell'aggiornamento del task:", error);
-    }
-  };
-
-  const deleteTask = () => {
-    // Rimuovo il task
-    try {
-      fetch(`http://localhost:3001/tasks/${task.id}`, {
-        method: "DELETE",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.success) {
-            removeTask(task.id);
-            alert("Task eliminato");
-            navigate("/");
-          } else {
-            alert("Errore nella cancellazione del task");
-          }
-        });
-    } catch {
-      (error) => {
-        console.error("Errore nella cancellazione del task:", error);
-      };
-    }
-  };
+  const { removeTask, updateTask } = useContext(TaskContext);
 
   return (
     <>
@@ -118,8 +72,9 @@ export default function TaskDetail() {
         show={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
         onConfirm={() => {
-          deleteTask();
+          removeTask(task.id);
           setShowDeleteModal(false);
+          navigate("/");
         }}
         confirmText="Elimina"
       />
@@ -127,7 +82,12 @@ export default function TaskDetail() {
         task={task}
         show={showUpdateModal}
         onClose={() => setShowUpdateModal(false)}
-        onSave={updateTask}
+        onSave={(updatedTask) => {
+          updateTask(task.id, updatedTask).then(() => {
+            setShowUpdateModal(false);
+            navigate("/"); // Torna alla home dopo l'aggiornamento
+          });
+        }}
       />
     </>
   );
